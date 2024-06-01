@@ -1,0 +1,121 @@
+{
+  "module_id": "rand:fake-modules-go",
+  "visibility": "public",
+  "url": "https://github.com/randhid/fake-modules-go",
+  "description": "Fake simulated models of viam resource apis.",
+  "models": [
+    {
+      "api": "rdk:component:arm",
+      "model": "rand:fake-modules-go:fake-arm"
+    },
+    {
+      "api": "rdk:component:arm",
+      "model": "rand:fake-modules-go:static-arm"
+    },
+    {
+      "api": "rdk:component:arm",
+      "model": "rand:fake-modules-go:empty-arm"
+    },
+    {
+      "api": "rdk:component:audioinput",
+      "model": "rand:fake-modules-go:fake-audioinput"
+    },
+    {
+      "api": "rdk:component:base",
+      "model": "rand:fake-modules-go:fake-base"
+    },
+    {
+      "api": "rdk:component:board",
+      "model": "rand:fake-modules-go:fake-board"
+    },
+    {
+      "api": "rdk:component:camera",
+      "model": "rand:fake-modules-go:fake-camera"
+    },
+    {
+      "api": "rdk:component:encoder",
+      "model": "rand:fake-modules-go:fake-encoder"
+    },
+    {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:fake-gantry"
+    },
+    {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:empty-gantry"
+    },
+    {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:static-gantry"
+    },
+    {
+      "api": "rdk:component:gripper",
+      "model": "rand:fake-modules-go:fake-gripper"
+    },
+    {
+      "api": "rdk:component:input_controller",
+      "model": "rand:fake-modules-go:fake-input"
+    },
+    {
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:fake-motor"
+    },
+    {
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:static-motor"
+    },
+    {
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:empty-motor"
+    },
+    {
+      "api": "rdk:component:movementsensor",
+      "model": "rand:fake-modules-go:fake-movementsensor"
+    },
+    {
+      "api": "rdk:component:movementsensor",
+      "model": "rand:fake-modules-go:static-movementsensor"
+    },
+    {
+      "api": "rdk:component:movementsensor",
+      "model": "rand:fake-modules-go:empty-movementsensor"
+    },
+    {
+      "api": "rdk:component:powersensor",
+      "model": "rand:fake-modules-go:fake-powersensor"
+    },
+    {
+      "api": "rdk:component:powersensor",
+      "model": "rand:fake-modules-go:empty-powersensor"
+    },
+    {
+      "api": "rdk:component:powersensor",
+      "model": "rand:fake-modules-go:static-powersensor"
+    },
+    {
+      "api": "rdk:component:sensor",
+      "model": "rand:fake-modules-go:fake-sensor"
+    },
+    {
+      "api": "rdk:component:sensor",
+      "model": "rand:fake-modules-go:empty-sensor"
+    },
+    {
+      "api": "rdk:component:sensor",
+      "model": "rand:fake-modules-go:static-sensor"
+    },
+    {
+      "api": "rdk:component:servo",
+      "model": "rand:fake-modules-go:fake-servo"
+    },
+    {
+      "api": "rdk:component:servo",
+      "model": "rand:fake-modules-go:static-servo"
+    }
+  ],
+  "build": {
+    "build": "make --always-make module.tar.gz",
+    "arch" : ["linux/amd64", "linux/arm64", "darwin/arm64"]
+  },
+  "entrypoint": "fake-modules-go"
+}
