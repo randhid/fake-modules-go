@@ -23,10 +23,10 @@ func init() {
 	resource.RegisterComponent(powersensor.API, Model, resource.Registration[powersensor.PowerSensor, *Config]{
 		Constructor: newFakePowerSensor,
 	})
-	resource.RegisterComponent(powersensor.API, EmptyModel, resource.Registration[powersensor.PowerSensor, *Config]{
+	resource.RegisterComponent(powersensor.API, EmptyModel, resource.Registration[powersensor.PowerSensor, resource.NoNativeConfig]{
 		Constructor: newEmptyPowerSensor,
 	})
-	resource.RegisterComponent(powersensor.API, StaticModel, resource.Registration[powersensor.PowerSensor, *Config]{
+	resource.RegisterComponent(powersensor.API, StaticModel, resource.Registration[powersensor.PowerSensor, *StaticConfig]{
 		Constructor: newStaticPowerSensor,
 	})
 }

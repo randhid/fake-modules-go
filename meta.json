@@ -1,6 +1,6 @@
 {
   "module_id": "rand:fake-modules-go",
-  "visibility": "public",
+  "visibility": "private",
   "url": "https://github.com/randhid/fake-modules-go",
   "description": "Fake simulated models of viam resource apis.",
   "models": [

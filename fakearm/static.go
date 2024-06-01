@@ -19,7 +19,6 @@ type static struct {
 	resource.Named
 	resource.AlwaysRebuild
 	resource.TriviallyCloseable
-	resource.Actuator
 
 	logger logging.Logger
 
@@ -100,4 +99,12 @@ func (s *static) EndPosition(ctx context.Context, extra map[string]interface{}) 
 
 func (s *static) MoveToPosition(ctx context.Context, pos spatialmath.Pose, extra map[string]interface{}) error {
 	return grpc.UnimplementedError
+}
+
+func (s *static) IsMoving(context.Context) (bool, error) {
+	return false, nil
+}
+
+func (s *static) Stop(context.Context, map[string]interface{}) error {
+	return nil
 }
