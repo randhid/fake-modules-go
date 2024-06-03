@@ -2,6 +2,7 @@ package fakegripper
 
 import (
 	"context"
+	"errors"
 	"fake-modules-go/common"
 	"sync"
 	"time"
@@ -50,56 +51,32 @@ func newFakeGripper(ctx context.Context, deps resource.Dependencies, conf resour
 	return f, nil
 }
 
-func (f *fake) simulateMove(ctx context.Context, extra map[string]interface{}) {
+func (f *fake) simulateMove(ctx context.Context, extra map[string]interface{}) error {
 	var moveCtx context.Context
-	moveCtx, f.stopmoving = context.WithCancel(context.Background())
-
-	// simulate motion
-	go func() {
-		ticker := time.NewTicker(time.Millisecond * 100) // Update every 100ms
-		defer ticker.Stop()
-
-		for {
-			select {
-			case <-moveCtx.Done():
-				// Exit the goroutine if the context is canceled
-				return
-			case <-ticker.C:
-				// Check if the context has been canceled
-				if moveCtx.Err() != nil {
-					err := f.Stop(ctx, extra)
-					f.logger.Error(err)
-					return // Ensure we exit the goroutine
-				}
-
-				// Loop through a simple busy loop
-				for i := 0; i < 50; i++ {
-					f.moving = true
-				}
-			}
-		}
-	}()
+	{
+		f.mu.Lock()
+		moveCtx, f.stopmoving = context.WithTimeout(context.Background(), 2*time.Second)
+		f.moving = true
+		f.mu.Unlock()
+	}
+	<-moveCtx.Done()
+	{
+		f.mu.Lock()
+		f.moving = false
+		f.mu.Unlock()
+	}
+	if errors.Is(moveCtx.Err(), context.DeadlineExceeded) {
+		return nil
+	}
+	return moveCtx.Err()
 }
 
 func (f *fake) Grab(ctx context.Context, extra map[string]interface{}) (bool, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	f.simulateMove(ctx, extra)
-	// we're done moving
-	f.moving = false
-	grabbed := true
-	return grabbed, nil
+	return true, f.simulateMove(ctx, extra)
 }
 
 func (f *fake) Open(ctx context.Context, extra map[string]interface{}) error {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-
-	f.simulateMove(ctx, extra)
-	// we're done moving
-	f.moving = false
-
-	return nil
+	return f.simulateMove(ctx, extra)
 }
 
 func (f *fake) Stop(context.Context, map[string]interface{}) error {
