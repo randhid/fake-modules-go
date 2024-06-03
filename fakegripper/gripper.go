@@ -51,7 +51,7 @@ func newFakeGripper(ctx context.Context, deps resource.Dependencies, conf resour
 	return f, nil
 }
 
-func (f *fake) simulateMove(ctx context.Context, extra map[string]interface{}) error {
+func (f *fake) simulateMove() error {
 	var moveCtx context.Context
 	{
 		f.mu.Lock()
