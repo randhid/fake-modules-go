@@ -51,11 +51,11 @@ func newFakeGripper(ctx context.Context, deps resource.Dependencies, conf resour
 	return f, nil
 }
 
-func (f *fake) simulateMove() error {
+func (f *fake) simulateMove(ctx context.Context) error {
 	var moveCtx context.Context
 	{
 		f.mu.Lock()
-		moveCtx, f.stopmoving = context.WithTimeout(context.Background(), 2*time.Second)
+		moveCtx, f.stopmoving = context.WithTimeout(ctx, 2*time.Second)
 		f.moving = true
 		f.mu.Unlock()
 	}
@@ -72,11 +72,11 @@ func (f *fake) simulateMove() error {
 }
 
 func (f *fake) Grab(ctx context.Context, extra map[string]interface{}) (bool, error) {
-	return true, f.simulateMove(ctx, extra)
+	return true, f.simulateMove(ctx)
 }
 
 func (f *fake) Open(ctx context.Context, extra map[string]interface{}) error {
-	return f.simulateMove(ctx, extra)
+	return f.simulateMove(ctx)
 }
 
 func (f *fake) Stop(context.Context, map[string]interface{}) error {
