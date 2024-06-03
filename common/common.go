@@ -3,11 +3,16 @@ package common
 import (
 	"math"
 	"math/rand"
+	"time"
 
 	"go.viam.com/rdk/resource"
 )
 
-const GoalWithinRange = 0.2
+const (
+	GoalWithinRange   = 0.2
+	DefaultWaitTimeMs = 500 * time.Millisecond // default wait time in milllisecods
+
+)
 
 var (
 	FakesFamily = resource.NewModelFamily("rand", "fake-modules-go")

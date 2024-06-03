@@ -48,6 +48,7 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 		return err
 	}
 
+	// Arms
 	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.Model); err != nil {
 		return err
 	}
@@ -57,23 +58,31 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.StaticModel); err != nil {
 		return err
 	}
+	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.ErroringModel); err != nil {
+		return err
+	}
 
+	// Bases
 	if err = fakes.AddModelFromRegistry(ctx, base.API, fakebase.Model); err != nil {
 		return err
 	}
 
+	// Boards
 	if err = fakes.AddModelFromRegistry(ctx, board.API, fakeboard.Model); err != nil {
 		return err
 	}
 
+	// Cameras
 	if err = fakes.AddModelFromRegistry(ctx, camera.API, fakecamera.Model); err != nil {
 		return err
 	}
 
+	// Encoders
 	if err = fakes.AddModelFromRegistry(ctx, encoder.API, fakeencoder.Model); err != nil {
 		return err
 	}
 
+	// Gantries
 	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.Model); err != nil {
 		return err
 	}
@@ -83,15 +92,21 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.StaticModel); err != nil {
 		return err
 	}
+	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.ErroringModel); err != nil {
+		return err
+	}
 
+	// Grippers
 	if err = fakes.AddModelFromRegistry(ctx, gripper.API, fakegripper.Model); err != nil {
 		return err
 	}
 
+	// Input Controllers
 	if err = fakes.AddModelFromRegistry(ctx, input.API, fakeinput.Model); err != nil {
 		return err
 	}
 
+	// Motors
 	if err = fakes.AddModelFromRegistry(ctx, motor.API, fakemotor.Model); err != nil {
 		return err
 	}
@@ -102,6 +117,7 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 		return err
 	}
 
+	// MovementSensors
 	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.Model); err != nil {
 		return err
 	}
@@ -111,7 +127,14 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.StaticModel); err != nil {
 		return err
 	}
+	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.WaitingModel); err != nil {
+		return err
+	}
+	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.ErroringModel); err != nil {
+		return err
+	}
 
+	// PowerSensors
 	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.Model); err != nil {
 		return err
 	}
@@ -121,7 +144,14 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.StaticModel); err != nil {
 		return err
 	}
+	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.ErroringModel); err != nil {
+		return err
+	}
+	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.WaitingModel); err != nil {
+		return err
+	}
 
+	// Servos
 	if err = fakes.AddModelFromRegistry(ctx, servo.API, fakeservo.Model); err != nil {
 		return err
 	}
@@ -129,6 +159,7 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 		return err
 	}
 
+	// Sensors
 	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.Model); err != nil {
 		return err
 	}
@@ -136,6 +167,12 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 		return err
 	}
 	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.StaticModel); err != nil {
+		return err
+	}
+	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.WaitingModel); err != nil {
+		return err
+	}
+	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.ErrroingModel); err != nil {
 		return err
 	}
 

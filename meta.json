@@ -1,6 +1,6 @@
 {
   "module_id": "rand:fake-modules-go",
-  "visibility": "private",
+  "visibility": "public",
   "url": "https://github.com/randhid/fake-modules-go",
   "description": "Fake simulated models of viam resource apis.",
   "models": [
@@ -15,6 +15,10 @@
     {
       "api": "rdk:component:arm",
       "model": "rand:fake-modules-go:empty-arm"
+    },
+    {
+      "api": "rdk:component:arm",
+      "model": "rand:fake-modules-go:erroring-arm"
     },
     {
       "api": "rdk:component:audioinput",
@@ -81,6 +85,14 @@
       "model": "rand:fake-modules-go:empty-movementsensor"
     },
     {
+      "api": "rdk:component:movementsensor",
+      "model": "rand:fake-modules-go:waiting-movementsensor"
+    },
+    {
+      "api": "rdk:component:movementsensor",
+      "model": "rand:fake-modules-go:erroring-movementsensor"
+    },
+    {
       "api": "rdk:component:powersensor",
       "model": "rand:fake-modules-go:fake-powersensor"
     },
@@ -91,6 +103,14 @@
     {
       "api": "rdk:component:powersensor",
       "model": "rand:fake-modules-go:static-powersensor"
+    },
+    {
+      "api": "rdk:component:powersensor",
+      "model": "rand:fake-modules-go:erroring-powersensor"
+    },
+    {
+      "api": "rdk:component:powersensor",
+      "model": "rand:fake-modules-go:waiting-powersensor"
     },
     {
       "api": "rdk:component:sensor",
@@ -105,6 +125,14 @@
       "model": "rand:fake-modules-go:static-sensor"
     },
     {
+      "api": "rdk:component:sensor",
+      "model": "rand:fake-modules-go:erroring-sensor"
+    },
+    {
+      "api": "rdk:component:sensor",
+      "model": "rand:fake-modules-go:waiting-sensor"
+    },
+    {
       "api": "rdk:component:servo",
       "model": "rand:fake-modules-go:fake-servo"
     },
@@ -115,7 +143,7 @@
   ],
   "build": {
     "build": "make --always-make module.tar.gz",
-    "arch" : ["linux/amd64", "linux/arm64", "darwin/arm64"]
+    "arch" : ["darwin/arm64"]
   },
   "entrypoint": "fake-modules-go"
 }

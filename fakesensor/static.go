@@ -16,7 +16,7 @@ type static struct {
 	logger logging.Logger
 }
 
-func newStaticSensor(ctx context.Context, deps resource.Dependencies, conf resource.Config, logger logging.Logger) (
+func newStaticSensor(_ context.Context, _ resource.Dependencies, conf resource.Config, logger logging.Logger) (
 	sensor.Sensor, error,
 ) {
 	s := &static{

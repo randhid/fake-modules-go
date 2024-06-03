@@ -8,16 +8,18 @@ import (
 	"go.viam.com/rdk/resource"
 )
 
-var (
-	Model       = common.FakesFamily.WithModel(gantryName)
-	StaticModel = common.FakesFamily.WithModel(staticName)
-	EmptyModel  = common.FakesFamily.WithModel(emptyName)
+const (
+	staticName   = "static-gantry"
+	emptyName    = "empty-gantry"
+	gantryName   = "fake-gantry"
+	erroringName = "erroring-gantry"
 )
 
-const (
-	staticName = "static-gantry"
-	emptyName  = "empty-gantry"
-	gantryName = "fake-gantry"
+var (
+	Model         = common.FakesFamily.WithModel(gantryName)
+	StaticModel   = common.FakesFamily.WithModel(staticName)
+	EmptyModel    = common.FakesFamily.WithModel(emptyName)
+	ErroringModel = common.FakesFamily.WithModel(erroringName)
 )
 
 func init() {
@@ -32,5 +34,9 @@ func init() {
 
 	resource.RegisterComponent(gantry.API, StaticModel, resource.Registration[gantry.Gantry, resource.NoNativeConfig]{
 		Constructor: newStaticGantry,
+	})
+
+	resource.RegisterComponent(gantry.API, ErroringModel, resource.Registration[gantry.Gantry, resource.NoNativeConfig]{
+		Constructor: newErroringGantry,
 	})
 }
