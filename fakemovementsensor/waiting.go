@@ -62,7 +62,7 @@ func newWaitingMovementSensor(ctx context.Context, deps resource.Dependencies, c
 	return w, nil
 }
 
-func (w *waiting) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
+func (w *waiting) Reconfigure(_ context.Context, _ resource.Dependencies, conf resource.Config) error {
 	newConf, err := resource.NativeConfig[WaitingConfig](conf)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func (w *waiting) Reconfigure(ctx context.Context, deps resource.Dependencies, c
 	return nil
 }
 
-func (w *waiting) Position(ctx context.Context, extra map[string]interface{}) (*geo.Point, float64, error) {
+func (w *waiting) Position(context.Context, map[string]interface{}) (*geo.Point, float64, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.posOff {
@@ -105,7 +105,7 @@ func (w *waiting) Position(ctx context.Context, extra map[string]interface{}) (*
 	return newcoord, altitude, nil
 }
 
-func (w *waiting) Orientation(ctx context.Context, extra map[string]interface{}) (spatialmath.Orientation, error) {
+func (w *waiting) Orientation(context.Context, map[string]interface{}) (spatialmath.Orientation, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.oriOff {
@@ -123,7 +123,7 @@ func (w *waiting) Orientation(ctx context.Context, extra map[string]interface{})
 	return &ov, nil
 }
 
-func (w *waiting) CompassHeading(ctx context.Context, extra map[string]interface{}) (float64, error) {
+func (w *waiting) CompassHeading(context.Context, map[string]interface{}) (float64, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.compassOff {
@@ -134,7 +134,7 @@ func (w *waiting) CompassHeading(ctx context.Context, extra map[string]interface
 	return float64(rand.Intn(360)), nil
 }
 
-func (w *waiting) AngularVelocity(ctx context.Context, extra map[string]interface{}) (spatialmath.AngularVelocity, error) {
+func (w *waiting) AngularVelocity(context.Context, map[string]interface{}) (spatialmath.AngularVelocity, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.angvelOff {
@@ -149,7 +149,7 @@ func (w *waiting) AngularVelocity(ctx context.Context, extra map[string]interfac
 	}, nil
 }
 
-func (w *waiting) LinearVelocity(ctx context.Context, extra map[string]interface{}) (r3.Vector, error) {
+func (w *waiting) LinearVelocity(context.Context, map[string]interface{}) (r3.Vector, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.linvelOff {
@@ -163,7 +163,7 @@ func (w *waiting) LinearVelocity(ctx context.Context, extra map[string]interface
 	}, nil
 }
 
-func (w *waiting) LinearAcceleration(ctx context.Context, extra map[string]interface{}) (r3.Vector, error) {
+func (w *waiting) LinearAcceleration(context.Context, map[string]interface{}) (r3.Vector, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.linaccOff {
@@ -177,7 +177,7 @@ func (w *waiting) LinearAcceleration(ctx context.Context, extra map[string]inter
 	}, nil
 }
 
-func (w *waiting) Accuracy(ctx context.Context, extra map[string]interface{}) (*movementsensor.Accuracy, error) {
+func (w *waiting) Accuracy(context.Context, map[string]interface{}) (*movementsensor.Accuracy, error) {
 	accmap := map[string]float32{
 		"satellites_noise_signal": rand.Float32() * 20,
 		"rand_trust_level":        rand.Float32() * 5,
@@ -203,7 +203,7 @@ func (w *waiting) Readings(ctx context.Context, extra map[string]interface{}) (m
 	return defaults, nil
 }
 
-func (w *waiting) Properties(ctx context.Context, extra map[string]interface{}) (*movementsensor.Properties, error) {
+func (w *waiting) Properties(context.Context, map[string]interface{}) (*movementsensor.Properties, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	time.Sleep(w.waitTime)

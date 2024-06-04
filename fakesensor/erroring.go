@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"go.viam.com/rdk/components/sensor"
+	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
 	"go.viam.com/rdk/resource"
 )
@@ -27,5 +28,5 @@ func newErroringSensor(_ context.Context, _ resource.Dependencies, conf resource
 }
 
 func (e *erroring) Readings(context.Context, map[string]interface{}) (map[string]interface{}, error) {
-	return nil, nil
+	return nil, grpc.UnimplementedError
 }
