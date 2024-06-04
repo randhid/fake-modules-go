@@ -5,6 +5,7 @@ import (
 	"math"
 	"math/rand"
 	"sync"
+	"time"
 
 	"fake-modules-go/common"
 
@@ -17,8 +18,9 @@ import (
 	"go.viam.com/rdk/spatialmath"
 )
 
-type Config struct {
+type WaitingConfig struct {
 	resource.TriviallyValidateConfig
+	WaitTime  int  `json:"wait_time_milli_seconds,omitempty"`
 	PosOff    bool `json:"turn_off_position,omitempty"`
 	OriOff    bool `json:"turn_off_orientation,omitempty"`
 	CompOff   bool `json:"turn_off_compass_heading,omitempty"`
@@ -27,7 +29,7 @@ type Config struct {
 	LinAccOff bool `json:"turn_off_linear_acceleration,omitempty"`
 }
 
-type fake struct {
+type waiting struct {
 	resource.Named
 	resource.TriviallyCloseable
 
@@ -36,6 +38,7 @@ type fake struct {
 	mu    sync.Mutex
 	coord geo.Point
 
+	waitTime   time.Duration
 	posOff     bool
 	oriOff     bool
 	compassOff bool
@@ -44,43 +47,48 @@ type fake struct {
 	linaccOff  bool
 }
 
-func newFakeMovementSensor(ctx context.Context, deps resource.Dependencies, conf resource.Config, logger logging.Logger) (
+func newWaitingMovementSensor(ctx context.Context, deps resource.Dependencies, conf resource.Config, logger logging.Logger) (
 	movementsensor.MovementSensor, error,
 ) {
-	f := &fake{
+	w := &waiting{
 		Named:  conf.ResourceName().AsNamed(),
 		logger: logger,
 	}
 
-	if err := f.Reconfigure(ctx, deps, conf); err != nil {
+	if err := w.Reconfigure(ctx, deps, conf); err != nil {
 		return nil, err
 	}
 
-	return f, nil
+	return w, nil
 }
 
-func (f *fake) Reconfigure(ctx context.Context, deps resource.Dependencies, conf resource.Config) error {
-	newConf, err := resource.NativeConfig[Config](conf)
+func (w *waiting) Reconfigure(_ context.Context, _ resource.Dependencies, conf resource.Config) error {
+	newConf, err := resource.NativeConfig[WaitingConfig](conf)
 	if err != nil {
 		return err
 	}
 
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	f.posOff = newConf.PosOff
-	f.oriOff = newConf.OriOff
-	f.compassOff = newConf.CompOff
-	f.linvelOff = newConf.LinVelOff
-	f.angvelOff = newConf.AngVelOff
-	f.linaccOff = newConf.LinAccOff
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	w.posOff = newConf.PosOff
+	w.oriOff = newConf.OriOff
+	w.compassOff = newConf.CompOff
+	w.linvelOff = newConf.LinVelOff
+	w.angvelOff = newConf.AngVelOff
+	w.linaccOff = newConf.LinAccOff
+
+	w.waitTime = common.DefaultWaitTimeMs // stes default to 500 milliseconds
+	if newConf.WaitTime > 0 {             // otherwise set the wait time to the user-configured value
+		w.waitTime = time.Duration(newConf.WaitTime) * time.Millisecond
+	}
 
 	return nil
 }
 
-func (f *fake) Position(ctx context.Context, extra map[string]interface{}) (*geo.Point, float64, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	if f.posOff {
+func (w *waiting) Position(context.Context, map[string]interface{}) (*geo.Point, float64, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.posOff {
 		return nil, math.NaN(), grpc.UnimplementedError
 	}
 
@@ -89,16 +97,18 @@ func (f *fake) Position(ctx context.Context, extra map[string]interface{}) (*geo
 	altitude := rand.Float64() * 100
 
 	newcoord := geo.NewPoint(
-		f.coord.Lat()+latincrement,
-		f.coord.Lng()+lngincrement,
+		w.coord.Lat()+latincrement,
+		w.coord.Lng()+lngincrement,
 	)
+
+	time.Sleep(w.waitTime)
 	return newcoord, altitude, nil
 }
 
-func (f *fake) Orientation(ctx context.Context, extra map[string]interface{}) (spatialmath.Orientation, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	if f.oriOff {
+func (w *waiting) Orientation(context.Context, map[string]interface{}) (spatialmath.Orientation, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.oriOff {
 		return nil, grpc.UnimplementedError
 	}
 
@@ -109,26 +119,29 @@ func (f *fake) Orientation(ctx context.Context, extra map[string]interface{}) (s
 
 	ov := spatialmath.OrientationVector{OX: ox, OY: oy, OZ: oz, Theta: theta}
 	ov.Normalize()
+	time.Sleep(w.waitTime)
 	return &ov, nil
 }
 
-func (f *fake) CompassHeading(ctx context.Context, extra map[string]interface{}) (float64, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	if f.compassOff {
+func (w *waiting) CompassHeading(context.Context, map[string]interface{}) (float64, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.compassOff {
 		return math.NaN(), grpc.UnimplementedError
 	}
+	time.Sleep(w.waitTime)
 
 	return float64(rand.Intn(360)), nil
 }
 
-func (f *fake) AngularVelocity(ctx context.Context, extra map[string]interface{}) (spatialmath.AngularVelocity, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	if f.angvelOff {
+func (w *waiting) AngularVelocity(context.Context, map[string]interface{}) (spatialmath.AngularVelocity, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.angvelOff {
 		return spatialmath.AngularVelocity{}, grpc.UnimplementedError
 	}
 
+	time.Sleep(w.waitTime)
 	return spatialmath.AngularVelocity{
 		X: rand.Float64() * 10. * common.Randomsign(),
 		Y: rand.Float64() * 10. * common.Randomsign(),
@@ -136,12 +149,13 @@ func (f *fake) AngularVelocity(ctx context.Context, extra map[string]interface{}
 	}, nil
 }
 
-func (f *fake) LinearVelocity(ctx context.Context, extra map[string]interface{}) (r3.Vector, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	if f.linvelOff {
+func (w *waiting) LinearVelocity(context.Context, map[string]interface{}) (r3.Vector, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.linvelOff {
 		return r3.Vector{X: math.NaN(), Y: math.NaN(), Z: math.NaN()}, grpc.UnimplementedError
 	}
+	time.Sleep(w.waitTime)
 	return r3.Vector{
 		X: rand.Float64() * 10. * common.Randomsign(),
 		Y: rand.Float64() * 10. * common.Randomsign(),
@@ -149,13 +163,13 @@ func (f *fake) LinearVelocity(ctx context.Context, extra map[string]interface{})
 	}, nil
 }
 
-func (f *fake) LinearAcceleration(ctx context.Context, extra map[string]interface{}) (r3.Vector, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	if f.linaccOff {
+func (w *waiting) LinearAcceleration(context.Context, map[string]interface{}) (r3.Vector, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.linaccOff {
 		return r3.Vector{}, grpc.UnimplementedError
 	}
-
+	time.Sleep(w.waitTime)
 	return r3.Vector{
 		X: rand.Float64() * 1.2 * common.Randomsign(),
 		Y: rand.Float64() * 5 * common.Randomsign(),
@@ -163,11 +177,12 @@ func (f *fake) LinearAcceleration(ctx context.Context, extra map[string]interfac
 	}, nil
 }
 
-func (f *fake) Accuracy(ctx context.Context, extra map[string]interface{}) (*movementsensor.Accuracy, error) {
+func (w *waiting) Accuracy(context.Context, map[string]interface{}) (*movementsensor.Accuracy, error) {
 	accmap := map[string]float32{
 		"satellites_noise_signal": rand.Float32() * 20,
 		"rand_trust_level":        rand.Float32() * 5,
 	}
+	time.Sleep(w.waitTime)
 	return &movementsensor.Accuracy{
 		AccuracyMap:        accmap,
 		Hdop:               rand.Float32() * 2.,
@@ -177,25 +192,27 @@ func (f *fake) Accuracy(ctx context.Context, extra map[string]interface{}) (*mov
 	}, nil
 }
 
-func (f *fake) Readings(ctx context.Context, extra map[string]interface{}) (map[string]interface{}, error) {
-	defaults, err := movementsensor.DefaultAPIReadings(ctx, f, extra)
+func (w *waiting) Readings(ctx context.Context, extra map[string]interface{}) (map[string]interface{}, error) {
+	defaults, err := movementsensor.DefaultAPIReadings(ctx, w, extra)
 	if err != nil {
 		return nil, err
 	}
 	defaults["foo"] = "bar"
 	defaults["satellites"] = rand.Intn(32)
+	time.Sleep(w.waitTime)
 	return defaults, nil
 }
 
-func (f *fake) Properties(ctx context.Context, extra map[string]interface{}) (*movementsensor.Properties, error) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
+func (w *waiting) Properties(context.Context, map[string]interface{}) (*movementsensor.Properties, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	time.Sleep(w.waitTime)
 	return &movementsensor.Properties{
-		PositionSupported:           !f.posOff,
-		OrientationSupported:        !f.oriOff,
-		CompassHeadingSupported:     !f.compassOff,
-		LinearVelocitySupported:     !f.linvelOff,
-		AngularVelocitySupported:    !f.angvelOff,
-		LinearAccelerationSupported: !f.linaccOff,
+		PositionSupported:           !w.posOff,
+		OrientationSupported:        !w.oriOff,
+		CompassHeadingSupported:     !w.compassOff,
+		LinearVelocitySupported:     !w.linvelOff,
+		AngularVelocitySupported:    !w.angvelOff,
+		LinearAccelerationSupported: !w.linaccOff,
 	}, nil
 }

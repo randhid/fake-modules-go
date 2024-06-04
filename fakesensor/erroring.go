@@ -4,21 +4,22 @@ import (
 	"context"
 
 	"go.viam.com/rdk/components/sensor"
+	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
 	"go.viam.com/rdk/resource"
 )
 
-type empty struct {
+type erroring struct {
 	resource.Named
 	resource.AlwaysRebuild
 	resource.TriviallyCloseable
 	logger logging.Logger
 }
 
-func newEmptySensor(_ context.Context, _ resource.Dependencies, conf resource.Config, logger logging.Logger) (
+func newErroringSensor(_ context.Context, _ resource.Dependencies, conf resource.Config, logger logging.Logger) (
 	sensor.Sensor, error,
 ) {
-	e := &empty{
+	e := &erroring{
 		Named:  conf.ResourceName().AsNamed(),
 		logger: logger,
 	}
@@ -26,6 +27,6 @@ func newEmptySensor(_ context.Context, _ resource.Dependencies, conf resource.Co
 	return e, nil
 }
 
-func (e *empty) Readings(context.Context, map[string]interface{}) (map[string]interface{}, error) {
-	return nil, nil
+func (e *erroring) Readings(context.Context, map[string]interface{}) (map[string]interface{}, error) {
+	return nil, grpc.UnimplementedError
 }

@@ -144,7 +144,7 @@ func (f *fake) EndPosition(ctx context.Context, extra map[string]interface{}) (s
 	return spatialmath.NewZeroPose(), grpc.UnimplementedError
 }
 
-func (f *fake) MoveToPosition( ctx context.Context, pos spatialmath.Pose, extra map[string]interface{}) error {
+func (f *fake) MoveToPosition(ctx context.Context, pos spatialmath.Pose, extra map[string]interface{}) error {
 	return grpc.UnimplementedError
 }
 
