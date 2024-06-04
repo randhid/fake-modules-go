@@ -14,7 +14,7 @@ type empty struct {
 	resource.TriviallyReconfigurable
 	resource.TriviallyCloseable
 	logger logging.Logger
-	
+
 	// nil interfaces
 	resource.Actuator
 }

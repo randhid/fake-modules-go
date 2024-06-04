@@ -21,8 +21,6 @@ const (
 	goalWithinRange         = 0.2
 )
 
-
-
 type Config struct {
 	PositionOn bool    `json:"enable_position"`
 	MaxSpeed   float64 `json:"max_speed_rpm,omitempty"`

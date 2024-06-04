@@ -15,9 +15,9 @@ const (
 )
 
 var (
-	Model        = common.FakesFamily.WithModel(armName)
-	EmptyModel   = common.FakesFamily.WithModel(emptyName)
-	StaticModel  = common.FakesFamily.WithModel(staticName)
+	Model         = common.FakesFamily.WithModel(armName)
+	EmptyModel    = common.FakesFamily.WithModel(emptyName)
+	StaticModel   = common.FakesFamily.WithModel(staticName)
 	ErroringModel = common.FakesFamily.WithModel(erroringName)
 )
 
