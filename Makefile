@@ -1,8 +1,7 @@
 
-BIN_OUTPUT_PATH = bin/$(shell uname -s)-$(shell uname -m)
+BIN_OUTPUT_PATH = bin
 TOOL_BIN = bin/gotools/$(shell uname -s)-$(shell uname -m)
-UNAME_S ?= $(shell uname -s)a
-UNAME_M ?= $(shell uname -m)
+UNAME_S ?= $(shell uname -s)
 
 build:
 	rm -f $(BIN_OUTPUT_PATH)/fake-modules-go
@@ -14,6 +13,11 @@ module.tar.gz: build
 
 fake-modules-go: *.go 
 	go build -o fake-modules-go *.go
+
+setup:
+	if [ "$(UNAME_S)" = "Linux" ]; then \
+		sudo apt install -y libnlopt-dev libjpeg-dev pkg-config; \
+	fi
 
 clean:
 	rm -rf $(BIN_OUTPUT_PATH)/fake-modules-go $(BIN_OUTPUT_PATH)/module.tar.gz fake-modules-go

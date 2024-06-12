@@ -142,8 +142,10 @@
     }
   ],
   "build": {
+    "setup": "make setup",
     "build": "make --always-make module.tar.gz",
-    "arch" : ["darwin/arm64"]
+    "path": "bin/module.tar.gz",
+    "arch": ["darwin/arm64", "linux/arm64", "linux/amd64"]
   },
-  "entrypoint": "fake-modules-go"
+  "entrypoint": "bin/fake-modules-go"
 }
