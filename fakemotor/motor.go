@@ -90,8 +90,6 @@ func (f *fake) SetPower(ctx context.Context, power float64, extra map[string]int
 }
 
 func (f *fake) SetRPM(ctx context.Context, rpm float64, extra map[string]interface{}) error {
-	f.mu.Lock()
-	defer f.mu.Unlock()
 	goal := math.Inf(1) * common.Sign(rpm)
 	return f.GoFor(ctx, rpm, goal, extra)
 }
@@ -139,7 +137,7 @@ func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[st
 				return
 			case <-ticker.C:
 				// if the goal is infinite, this should go on forever until stopped from the SetRPM call
-				// I should factor out the simulation into a simulate move at some point to take in currentPos, goal and rpm 
+				// I should factor out the simulation into a simulate move at some point to take in currentPos, goal and rpm
 				// and make it stop itself on a new call.
 				// but not today.
 				if !utils.Float64AlmostEqual(currPos, goal, common.GoalWithinRange) {
