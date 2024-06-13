@@ -89,6 +89,16 @@ func (f *fake) SetPower(ctx context.Context, power float64, extra map[string]int
 	return nil
 }
 
+func (f *fake) SetRPM(ctx context.Context, rpm float64, extra map[string]interface{}) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	dir := 1
+	if math.Signbit(rpm) {
+		dir = -1
+	}
+	return f.GoFor(ctx, rpm, math.Inf(dir), extra)
+}
+
 func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[string]interface{}) error {
 	currPos, err := f.Position(ctx, nil)
 	f.logger.Infof("currPos at start %v", currPos)
@@ -113,6 +123,10 @@ func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[st
 	f.logger.Infof("timeIncrement %v", timeIncrement)
 	f.mu.Lock()
 	defer f.mu.Unlock()
+
+	if f.stopmoving != nil {
+		f.stopmoving()
+	}
 
 	f.moving = true
 	f.power = rpm / f.maxspeed
