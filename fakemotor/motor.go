@@ -138,7 +138,7 @@ func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[st
 				// Exit the goroutine if the context is canceled
 				return
 			case <-ticker.C:
-				// if goal is infinite, this should go on forever.
+				// if the goal is infinite, this should go on forever until stopped from the SetRPM call
 				// I should factor out the simulation into a simulate move at some point to take in currentPos, goal and rpm 
 				// and make it stop itself on a new call.
 				// but not today.
