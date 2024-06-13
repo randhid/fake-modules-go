@@ -33,6 +33,10 @@ func (e *empty) SetPower(context.Context, float64, map[string]interface{}) error
 	return nil
 }
 
+func (e *empty) SetRPM(context.Context, float64, map[string]interface{}) error {
+	return nil
+}
+
 func (e *empty) GoFor(context.Context, float64, float64, map[string]interface{}) error {
 	return nil
 }

@@ -9,6 +9,8 @@ import (
 	"go.viam.com/rdk/resource"
 )
 
+const speed = 100 // rev per minute
+
 type static struct {
 	resource.Named
 	resource.TriviallyReconfigurable
@@ -18,7 +20,6 @@ type static struct {
 	mu       sync.Mutex
 	power    float64
 	position float64
-	moving   bool
 }
 
 func newStaticMotor(_ context.Context, _ resource.Dependencies, conf resource.Config, logger logging.Logger) (
@@ -35,7 +36,13 @@ func (s *static) SetPower(ctx context.Context, power float64, extra map[string]i
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.power = power
-	s.moving = true
+	return nil
+}
+
+func (s *static) SetRPM(ctx context.Context, rpm float64, extra map[string]interface{}) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.power = rpm / speed
 	return nil
 }
 
@@ -63,7 +70,7 @@ func (s *static) GoTo(ctx context.Context, rpm, targetPos float64, extra map[str
 func (s *static) Position(ctx context.Context, extra map[string]interface{}) (float64, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.position, nil
+	return s.position + s.power, nil
 }
 
 func (s *static) ResetZeroPosition(ctx context.Context, offset float64, extra map[string]interface{}) error {
@@ -82,19 +89,18 @@ func (s *static) Properties(ctx context.Context, extra map[string]interface{}) (
 func (s *static) IsMoving(ctx context.Context) (bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.moving, nil
+	return s.power != 0, nil
 }
 
 func (s *static) IsPowered(ctx context.Context, extra map[string]interface{}) (bool, float64, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.moving, s.power, nil
+	return s.power != 0, s.power, nil
 }
 
 func (s *static) Stop(ctx context.Context, extra map[string]interface{}) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.moving = false
 	s.power = 0
 	return nil
 }

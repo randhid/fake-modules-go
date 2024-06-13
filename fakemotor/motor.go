@@ -89,21 +89,23 @@ func (f *fake) SetPower(ctx context.Context, power float64, extra map[string]int
 	return nil
 }
 
+func (f *fake) SetRPM(ctx context.Context, rpm float64, extra map[string]interface{}) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	goal := math.Inf(1) * common.Sign(rpm)
+	return f.GoFor(ctx, rpm, goal, extra)
+}
+
 func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[string]interface{}) error {
 	currPos, err := f.Position(ctx, nil)
 	f.logger.Infof("currPos at start %v", currPos)
 	if err != nil {
 		return errors.Join(errors.New("GoFor cannot be executed"), err)
 	}
-
 	if rpm == 0 {
 		return motor.NewZeroRPMError()
 	}
-
 	goal := currPos + revolutions
-	if revolutions == 0 {
-		goal = math.Inf(1) * common.Sign(rpm)
-	}
 
 	// time in MilliSeconds
 	timeIncrement := 100 * time.Millisecond
@@ -113,6 +115,10 @@ func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[st
 	f.logger.Infof("timeIncrement %v", timeIncrement)
 	f.mu.Lock()
 	defer f.mu.Unlock()
+
+	if f.stopmoving != nil {
+		f.stopmoving()
+	}
 
 	f.moving = true
 	f.power = rpm / f.maxspeed
@@ -132,6 +138,10 @@ func (f *fake) GoFor(ctx context.Context, rpm, revolutions float64, extra map[st
 				// Exit the goroutine if the context is canceled
 				return
 			case <-ticker.C:
+				// if the goal is infinite, this should go on forever until stopped from the SetRPM call
+				// I should factor out the simulation into a simulate move at some point to take in currentPos, goal and rpm 
+				// and make it stop itself on a new call.
+				// but not today.
 				if !utils.Float64AlmostEqual(currPos, goal, common.GoalWithinRange) {
 					f.moving = true
 					currPos += revIncrement
