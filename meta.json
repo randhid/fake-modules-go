@@ -85,7 +85,7 @@
       "model": "rand:fake-modules-go:empty-movementsensor"
     },
     {
-      "api": "rdk:component:movementsensor",
+      "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:waiting-movementsensor"
     },
     {
