@@ -73,43 +73,43 @@
       "model": "rand:fake-modules-go:empty-motor"
     },
     {
-      "api": "rdk:component:movementsensor",
+      "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:fake-movementsensor"
     },
     {
-      "api": "rdk:component:movementsensor",
+      "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:static-movementsensor"
     },
     {
-      "api": "rdk:component:movementsensor",
+      "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:empty-movementsensor"
     },
     {
-      "api": "rdk:component:movementsensor",
+      "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:waiting-movementsensor"
     },
     {
-      "api": "rdk:component:movementsensor",
+      "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:erroring-movementsensor"
     },
     {
-      "api": "rdk:component:powersensor",
+      "api": "rdk:component:power_sensor",
       "model": "rand:fake-modules-go:fake-powersensor"
     },
     {
-      "api": "rdk:component:powersensor",
+      "api": "rdk:component:power_sensor",
       "model": "rand:fake-modules-go:empty-powersensor"
     },
     {
-      "api": "rdk:component:powersensor",
+      "api": "rdk:component:power_sensor",
       "model": "rand:fake-modules-go:static-powersensor"
     },
     {
-      "api": "rdk:component:powersensor",
+      "api": "rdk:component:power_sensor",
       "model": "rand:fake-modules-go:erroring-powersensor"
     },
     {
-      "api": "rdk:component:powersensor",
+      "api": "rdk:component:power_sensor",
       "model": "rand:fake-modules-go:waiting-powersensor"
     },
     {
