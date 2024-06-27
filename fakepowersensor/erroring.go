@@ -20,7 +20,7 @@ type errorring struct {
 func newErroringPowerSensor(_ context.Context, _ resource.Dependencies, conf resource.Config, logger logging.Logger) (
 	powersensor.PowerSensor, error,
 ) {
-	f := &static{
+	f := &errorring{
 		Named:  conf.ResourceName().AsNamed(),
 		logger: logger,
 	}
