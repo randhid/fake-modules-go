@@ -21,7 +21,7 @@
       "model": "rand:fake-modules-go:erroring-arm"
     },
     {
-      "api": "rdk:component:audioinput",
+      "api": "rdk:component:audio_input",
       "model": "rand:fake-modules-go:fake-audioinput"
     },
     {
