@@ -132,7 +132,7 @@ func (f *fake) MoveToPosition(ctx context.Context, target []float64, speeds []fl
 		if speeds[i] == 0 {
 			speed = defaultspeed
 		}
-		increments[i] = speed * (target[i] - current[i])
+		increments[i] = speed
 	}
 
 	var moveCtx context.Context
