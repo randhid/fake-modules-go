@@ -8,8 +8,6 @@ import (
 	"sync"
 	"time"
 
-	"fake-modules-go/common"
-
 	"github.com/pkg/errors"
 	"go.uber.org/multierr"
 	pb "go.viam.com/api/component/board/v1"
@@ -19,20 +17,10 @@ import (
 	"go.viam.com/rdk/resource"
 )
 
-const boardName = "fake-board"
-
-var Model = common.FakesFamily.WithModel(boardName)
-
 type Config struct {
 	resource.TriviallyValidateConfig
 	AnalogReaders     []board.AnalogReaderConfig     `json:"analogs,omitempty"`
 	DigitalInterrupts []board.DigitalInterruptConfig `json:"digital_interrupts,omitempty"`
-}
-
-func init() {
-	resource.RegisterComponent(board.API, Model, resource.Registration[board.Board, *Config]{
-		Constructor: newFakeBoard,
-	})
 }
 
 type fakeboard struct {

@@ -37,6 +37,10 @@
       "model": "rand:fake-modules-go:fake-board"
     },
     {
+      "api": "rdk:component:board",
+      "model": "rand:fake-modules-go:empty-board"
+    },
+    {
       "api": "rdk:component:camera",
       "model": "rand:fake-modules-go:fake-camera"
     },
@@ -63,6 +67,10 @@
     {
       "api": "rdk:component:input_controller",
       "model": "rand:fake-modules-go:fake-input"
+    },
+    {
+      "api": "rdk:component:input_controller",
+      "model": "rand:fake-modules-go:empty-input"
     },
     {
       "api": "rdk:component:motor",
