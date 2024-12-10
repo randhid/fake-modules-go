@@ -3,7 +3,6 @@ package fakeinput
 import (
 	"context"
 	"errors"
-	"fake-modules-go/common"
 	"math/rand"
 	"sync"
 	"time"
@@ -14,15 +13,6 @@ import (
 	"go.viam.com/utils"
 )
 
-const inputName = "fake-input"
-
-var Model = common.FakesFamily.WithModel(inputName)
-
-func init() {
-	resource.RegisterComponent(input.API, Model, resource.Registration[input.Controller, *Config]{
-		Constructor: newFakeInput,
-	})
-}
 
 func newFakeInput(ctx context.Context, deps resource.Dependencies, conf resource.Config, logger logging.Logger) (
 	input.Controller, error,

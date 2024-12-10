@@ -29,6 +29,10 @@
       "model": "rand:fake-modules-go:fake-base"
     },
     {
+      "api": "rdk:component:base",
+      "model": "rand:fake-modules-go:empty-base"
+    },
+    {
       "api": "rdk:component:board",
       "model": "rand:fake-modules-go:fake-board"
     },

@@ -3,7 +3,6 @@ package fakebase
 import (
 	"context"
 	"errors"
-	"fake-modules-go/common"
 	"math"
 	"sync"
 	"time"
@@ -16,23 +15,14 @@ import (
 )
 
 const (
-	baseName                    = "fake-base"
 	defaultWidthM               = 100
 	defaultWheelCircumferenceMm = 25
 )
-
-var Model = common.FakesFamily.WithModel(baseName)
 
 type Config struct {
 	resource.TriviallyValidateConfig
 	Width              float64 `json:"width_mm,omitempty"`
 	WheelCircumference float64 `json:"wheel_circumference_mm,omitempty"`
-}
-
-func init() {
-	resource.RegisterComponent(base.API, Model, resource.Registration[base.Base, *Config]{
-		Constructor: newFakeBase,
-	})
 }
 
 type fake struct {
