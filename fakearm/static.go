@@ -6,12 +6,12 @@ import (
 	_ "embed"
 	"sync"
 
-	pb "go.viam.com/api/component/arm/v1"
 	"go.viam.com/rdk/components/arm"
 	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
 	"go.viam.com/rdk/referenceframe"
 	"go.viam.com/rdk/resource"
+	"go.viam.com/rdk/robot/framesystem"
 	"go.viam.com/rdk/spatialmath"
 )
 
@@ -21,9 +21,7 @@ type static struct {
 	resource.TriviallyCloseable
 
 	logger logging.Logger
-
-	// nil interfaces
-	referenceframe.InputEnabled
+	framesystem.InputEnabled
 
 	mu          sync.Mutex
 	model       referenceframe.Model
@@ -52,22 +50,24 @@ func newStaticArm(ctx context.Context, deps resource.Dependencies, conf resource
 }
 
 // MoveToJointPositions sets the joints.
-func (s *static) MoveToJointPositions(ctx context.Context, joints *pb.JointPositions, extra map[string]interface{}) error {
+func (s *static) MoveToJointPositions(ctx context.Context, joints []referenceframe.Input, extra map[string]interface{}) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if len(joints.Values) != len(s.jointValues) {
+	jointValues := referenceframe.InputsToFloats(joints)
+
+	if len(jointValues) != len(s.jointValues) {
 		return nil
 	}
 
-	s.jointValues = joints.Values
+	s.jointValues = jointValues
 	return nil
 }
 
 // JointPositions returns joints.
-func (s *static) JointPositions(ctx context.Context, extra map[string]interface{}) (*pb.JointPositions, error) {
+func (s *static) JointPositions(ctx context.Context, extra map[string]interface{}) ([]referenceframe.Input, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	retJoint := &pb.JointPositions{Values: s.jointValues}
+	retJoint := referenceframe.FloatsToInputs(s.jointValues)
 	return retJoint, nil
 }
 
@@ -85,12 +85,16 @@ func (s *static) Geometries(ctx context.Context, extra map[string]interface{}) (
 	if err != nil {
 		return nil, err
 	}
-	inputs := s.model.InputFromProtobuf(res)
+	inputs := res
 	gif, err := s.model.Geometries(inputs)
 	if err != nil {
 		return nil, err
 	}
 	return gif.Geometries(), nil
+}
+
+func (s *static) MoveThroughJointPositions(context.Context, [][]referenceframe.Input, *arm.MoveOptions, map[string]interface{}) error {
+	return nil
 }
 
 func (s *static) EndPosition(ctx context.Context, extra map[string]interface{}) (spatialmath.Pose, error) {

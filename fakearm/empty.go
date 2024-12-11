@@ -5,7 +5,6 @@ import (
 	"context"
 	_ "embed"
 
-	pb "go.viam.com/api/component/arm/v1"
 	"go.viam.com/rdk/components/arm"
 	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
@@ -43,13 +42,17 @@ func (e *empty) MoveToPosition(ctx context.Context, pos spatialmath.Pose, extra 
 }
 
 // MoveToJointPositions sets the joints.
-func (e *empty) MoveToJointPositions(ctx context.Context, joints *pb.JointPositions, extra map[string]interface{}) error {
+func (e *empty) MoveToJointPositions(ctx context.Context, joints []referenceframe.Input, extra map[string]interface{}) error {
 	return nil
 }
 
 // JointPositions returns joints.
-func (e *empty) JointPositions(ctx context.Context, extra map[string]interface{}) (*pb.JointPositions, error) {
+func (e *empty) JointPositions(ctx context.Context, extra map[string]interface{}) ([]referenceframe.Input, error) {
 	return nil, nil
+}
+
+func (e *empty) MoveThroughJointPositions(context.Context, [][]referenceframe.Input, *arm.MoveOptions, map[string]any) error {
+	return nil
 }
 
 func (e *empty) IsMoving(context.Context) (bool, error) {

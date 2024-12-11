@@ -16,7 +16,7 @@ fake-modules-go: *.go
 
 setup:
 	if [ "$(UNAME_S)" = "Linux" ]; then \
-		sudo apt install -y libnlopt-dev libjpeg-dev pkg-config; \
+		sudo apt install -y pkg-config; \
 	fi
 
 clean:

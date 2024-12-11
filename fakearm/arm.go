@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	pb "go.viam.com/api/component/arm/v1"
 	"go.viam.com/rdk/components/arm"
 	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
@@ -51,9 +50,9 @@ func newFakeArm(_ context.Context, _ resource.Dependencies, conf resource.Config
 	return f, nil
 }
 
-func (f *fake) MoveToJointPositions(ctx context.Context, joints *pb.JointPositions, extra map[string]interface{}) error {
+func (f *fake) MoveToJointPositions(ctx context.Context, joints []referenceframe.Input, extra map[string]interface{}) error {
 	// Extract the target joint positions
-	targetJoints := joints.Values
+	targetJoints := referenceframe.InputsToFloats(joints)
 
 	// Lock the mutex to ensure thread safety
 	f.mu.Lock()
@@ -97,11 +96,16 @@ func (f *fake) MoveToJointPositions(ctx context.Context, joints *pb.JointPositio
 	return nil
 }
 
-func (f *fake) JointPositions(ctx context.Context, extra map[string]interface{}) (*pb.JointPositions, error) {
+func (f *fake) JointPositions(ctx context.Context, extra map[string]interface{}) ([]referenceframe.Input, error) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
-	retJoint := &pb.JointPositions{Values: f.jointValues}
+
+	retJoint := referenceframe.FloatsToInputs(f.jointValues)
 	return retJoint, nil
+}
+
+func (f *fake) MoveThroughJointPositions(context.Context, [][]referenceframe.Input, *arm.MoveOptions, map[string]interface{}) error {
+	return nil
 }
 
 func (f *fake) Stop(ctx context.Context, extra map[string]interface{}) error {
@@ -131,9 +135,8 @@ func (f *fake) Geometries(ctx context.Context, extra map[string]interface{}) ([]
 	if err != nil {
 		return nil, err
 	}
-	inputs := f.model.InputFromProtobuf(res)
 
-	gif, err := f.model.Geometries(inputs)
+	gif, err := f.model.Geometries(res)
 	if err != nil {
 		return nil, err
 	}
@@ -153,17 +156,12 @@ func (f *fake) CurrentInputs(ctx context.Context) ([]referenceframe.Input, error
 	if err != nil {
 		return []referenceframe.Input{}, err
 	}
-	inputs := referenceframe.FloatsToInputs(pos.Values)
-	return inputs, nil
+	return pos, nil
 }
 
 func (f *fake) GoToInputs(ctx context.Context, inputs ...[]referenceframe.Input) error {
-	for _, input := range inputs {
-		pos := referenceframe.InputsToFloats(input)
-		jp := pb.JointPositions{Values: pos}
-		if err := f.MoveToJointPositions(ctx, &jp, nil); err != nil {
-			return err
-		}
+	if err := f.MoveThroughJointPositions(ctx, inputs, nil, nil); err != nil {
+		return err
 	}
 	return nil
 }

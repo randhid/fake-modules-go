@@ -5,7 +5,6 @@ import (
 	"context"
 	_ "embed"
 
-	pb "go.viam.com/api/component/arm/v1"
 	"go.viam.com/rdk/components/arm"
 	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
@@ -34,22 +33,26 @@ func newErroringArm(_ context.Context, _ resource.Dependencies, conf resource.Co
 	return e, nil
 }
 
-func (e *erroring) EndPosition(ctx context.Context, extra map[string]interface{}) (spatialmath.Pose, error) {
+func (e *erroring) EndPosition(context.Context, map[string]interface{}) (spatialmath.Pose, error) {
 	return nil, grpc.UnimplementedError
 }
 
-func (e *erroring) MoveToPosition(ctx context.Context, pos spatialmath.Pose, extra map[string]interface{}) error {
+func (e *erroring) MoveToPosition(context.Context, spatialmath.Pose, map[string]interface{}) error {
 	return grpc.UnimplementedError
 }
 
 // MoveToJointPositions sets the joints.
-func (e *erroring) MoveToJointPositions(ctx context.Context, joints *pb.JointPositions, extra map[string]interface{}) error {
-	return nil
+func (e *erroring) MoveToJointPositions(context.Context, []referenceframe.Input, map[string]interface{}) error {
+	return grpc.UnimplementedError
 }
 
 // JointPositions returns joints.
-func (e *erroring) JointPositions(ctx context.Context, extra map[string]interface{}) (*pb.JointPositions, error) {
+func (e *erroring) JointPositions(ctx context.Context, extra map[string]interface{}) ([]referenceframe.Input, error) {
 	return nil, grpc.UnimplementedError
+}
+
+func (e *erroring) MoveThroughJointPositions(context.Context, [][]referenceframe.Input, *arm.MoveOptions, map[string]interface{}) error {
+	return grpc.UnimplementedError
 }
 
 func (e *erroring) IsMoving(context.Context) (bool, error) {

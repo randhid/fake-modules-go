@@ -43,7 +43,7 @@ func main() {
 
 func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (err error) {
 	// instantiates the module itself
-	fakes, err := module.NewModuleFromArgs(ctx, logger)
+	fakes, err := module.NewModuleFromArgs(ctx)
 	if err != nil {
 		return err
 	}
@@ -64,6 +64,9 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 
 	// Bases
 	if err = fakes.AddModelFromRegistry(ctx, base.API, fakebase.Model); err != nil {
+		return err
+	}
+	if err = fakes.AddModelFromRegistry(ctx, base.API, fakebase.EmptyModel); err != nil {
 		return err
 	}
 
@@ -103,6 +106,9 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 
 	// Input Controllers
 	if err = fakes.AddModelFromRegistry(ctx, input.API, fakeinput.Model); err != nil {
+		return err
+	}
+	if err = fakes.AddModelFromRegistry(ctx, input.API, fakeinput.EmptyModel); err != nil {
 		return err
 	}
 

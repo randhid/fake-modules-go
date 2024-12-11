@@ -13,7 +13,6 @@ import (
 	"go.viam.com/rdk/logging"
 	"go.viam.com/rdk/pointcloud"
 	"go.viam.com/rdk/resource"
-	"go.viam.com/rdk/rimage/transform"
 )
 
 const cameraName = "fake-camera"
@@ -46,16 +45,16 @@ func newFakeCamera(ctx context.Context, deps resource.Dependencies, conf resourc
 	return f, nil
 }
 
+func (f *fake) Image(context.Context, string, map[string]interface{}) ([]byte, camera.ImageMetadata, error) {
+	return nil, camera.ImageMetadata{}, grpc.UnimplementedError
+}
+
 func (f *fake) Images(context.Context) ([]camera.NamedImage, resource.ResponseMetadata, error) {
 	return []camera.NamedImage{}, resource.ResponseMetadata{}, grpc.UnimplementedError
 }
 
 func (f *fake) NextPointCloud(context.Context) (pointcloud.PointCloud, error) {
 	return pointcloud.New(), grpc.UnimplementedError
-}
-
-func (f *fake) Projector(context.Context) (transform.Projector, error) {
-	return nil, grpc.UnimplementedError
 }
 
 func (f *fake) Properties(context.Context) (camera.Properties, error) {
