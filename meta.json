@@ -6,24 +6,20 @@
   "description": "Fake simulated models of viam resource apis.",
   "models": [
     {
-      "api": "rdk:component:gantry",
-      "model": "rand:fake-modules-go:fake-gantry"
+      "api": "rdk:component:board",
+      "model": "rand:fake-modules-go:fake-board"
     },
     {
-      "api": "rdk:component:gantry",
-      "model": "rand:fake-modules-go:empty-gantry"
+      "api": "rdk:component:board",
+      "model": "rand:fake-modules-go:empty-board"
     },
     {
-      "api": "rdk:component:gantry",
-      "model": "rand:fake-modules-go:static-gantry"
+      "api": "rdk:component:camera",
+      "model": "rand:fake-modules-go:fake-camera"
     },
     {
-      "api": "rdk:component:gantry",
-      "model": "rand:fake-modules-go:erroring-gantry"
-    },
-    {
-      "api": "rdk:component:gripper",
-      "model": "rand:fake-modules-go:fake-gripper"
+      "api": "rdk:component:encoder",
+      "model": "rand:fake-modules-go:fake-encoder"
     },
     {
       "api": "rdk:component:input_controller",
@@ -34,24 +30,16 @@
       "model": "rand:fake-modules-go:empty-input"
     },
     {
-      "api": "rdk:component:movement_sensor",
-      "model": "rand:fake-modules-go:fake-movementsensor"
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:fake-motor"
     },
     {
-      "api": "rdk:component:movement_sensor",
-      "model": "rand:fake-modules-go:empty-movementsensor"
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:empty-motor"
     },
     {
-      "api": "rdk:component:movement_sensor",
-      "model": "rand:fake-modules-go:static-movementsensor"
-    },
-    {
-      "api": "rdk:component:movement_sensor",
-      "model": "rand:fake-modules-go:waiting-movementsensor"
-    },
-    {
-      "api": "rdk:component:movement_sensor",
-      "model": "rand:fake-modules-go:erroring-movementsensor"
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:static-motor"
     },
     {
       "api": "rdk:component:power_sensor",
@@ -74,6 +62,54 @@
       "model": "rand:fake-modules-go:waiting-powersensor"
     },
     {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:fake-gantry"
+    },
+    {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:empty-gantry"
+    },
+    {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:static-gantry"
+    },
+    {
+      "api": "rdk:component:gantry",
+      "model": "rand:fake-modules-go:erroring-gantry"
+    },
+    {
+      "api": "rdk:component:gripper",
+      "model": "rand:fake-modules-go:fake-gripper"
+    },
+    {
+      "api": "rdk:component:movement_sensor",
+      "model": "rand:fake-modules-go:fake-movementsensor"
+    },
+    {
+      "api": "rdk:component:movement_sensor",
+      "model": "rand:fake-modules-go:empty-movementsensor"
+    },
+    {
+      "api": "rdk:component:movement_sensor",
+      "model": "rand:fake-modules-go:static-movementsensor"
+    },
+    {
+      "api": "rdk:component:movement_sensor",
+      "model": "rand:fake-modules-go:waiting-movementsensor"
+    },
+    {
+      "api": "rdk:component:movement_sensor",
+      "model": "rand:fake-modules-go:erroring-movementsensor"
+    },
+    {
+      "api": "rdk:component:servo",
+      "model": "rand:fake-modules-go:fake-servo"
+    },
+    {
+      "api": "rdk:component:servo",
+      "model": "rand:fake-modules-go:static-servo"
+    },
+    {
       "api": "rdk:component:sensor",
       "model": "rand:fake-modules-go:fake-sensor"
     },
@@ -92,22 +128,6 @@
     {
       "api": "rdk:component:sensor",
       "model": "rand:fake-modules-go:erroring-sensor"
-    },
-    {
-      "api": "rdk:component:board",
-      "model": "rand:fake-modules-go:fake-board"
-    },
-    {
-      "api": "rdk:component:camera",
-      "model": "rand:fake-modules-go:fake-camera"
-    },
-    {
-      "api": "rdk:component:servo",
-      "model": "rand:fake-modules-go:fake-servo"
-    },
-    {
-      "api": "rdk:component:servo",
-      "model": "rand:fake-modules-go:static-servo"
     },
     {
       "api": "rdk:component:arm",
@@ -132,22 +152,6 @@
     {
       "api": "rdk:component:base",
       "model": "rand:fake-modules-go:empty-base"
-    },
-    {
-      "api": "rdk:component:encoder",
-      "model": "rand:fake-modules-go:fake-encoder"
-    },
-    {
-      "api": "rdk:component:motor",
-      "model": "rand:fake-modules-go:fake-motor"
-    },
-    {
-      "api": "rdk:component:motor",
-      "model": "rand:fake-modules-go:empty-motor"
-    },
-    {
-      "api": "rdk:component:motor",
-      "model": "rand:fake-modules-go:static-motor"
     }
   ],
   "entrypoint": "bin/fake-modules-go",
