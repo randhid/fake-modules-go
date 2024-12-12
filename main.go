@@ -74,6 +74,9 @@ func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (er
 	if err = fakes.AddModelFromRegistry(ctx, board.API, fakeboard.Model); err != nil {
 		return err
 	}
+	if err = fakes.AddModelFromRegistry(ctx, board.API, fakeboard.EmptyModel); err != nil {
+		return err
+	}
 
 	// Cameras
 	if err = fakes.AddModelFromRegistry(ctx, camera.API, fakecamera.Model); err != nil {

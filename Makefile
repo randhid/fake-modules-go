@@ -9,7 +9,7 @@ build:
 
 module.tar.gz: build
 	rm -f $(BIN_OUTPUT_PATH)/module.tar.gz
-	tar czf $(BIN_OUTPUT_PATH)/module.tar.gz $(BIN_OUTPUT_PATH)/fake-modules-go
+	tar czf $(BIN_OUTPUT_PATH)/module.tar.gz $(BIN_OUTPUT_PATH)/fake-modules-go meta.json
 
 fake-modules-go: *.go 
 	go build -o fake-modules-go *.go

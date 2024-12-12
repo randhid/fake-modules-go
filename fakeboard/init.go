@@ -22,7 +22,7 @@ func init() {
 		Constructor: newFakeBoard,
 	})
 
-	resource.RegisterComponent(board.API, Model, resource.Registration[board.Board, *Config]{
+	resource.RegisterComponent(board.API, EmptyModel, resource.Registration[board.Board, *Config]{
 		Constructor: newEmptyBoard,
 	})
 }
