@@ -47,11 +47,11 @@ func (e *empty) AngularVelocity(ctx context.Context, extra map[string]interface{
 }
 
 func (e *empty) LinearVelocity(ctx context.Context, extra map[string]interface{}) (r3.Vector, error) {
-	return r3.Vector{}, nil
+	return r3.Vector{X: math.NaN(), Y: math.NaN(), Z: math.NaN()}, nil
 }
 
 func (e *empty) LinearAcceleration(ctx context.Context, extra map[string]interface{}) (r3.Vector, error) {
-	return r3.Vector{}, nil
+	return r3.Vector{X: math.NaN(), Y: math.NaN(), Z: math.NaN()}, nil
 }
 
 func (e *empty) Accuracy(ctx context.Context, extra map[string]interface{}) (*movementsensor.Accuracy, error) {

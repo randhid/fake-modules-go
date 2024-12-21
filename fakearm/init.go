@@ -12,6 +12,7 @@ const (
 	emptyName    = "empty-arm"
 	staticName   = "static-arm"
 	erroringName = "erroring-arm"
+	nanName      = "nan-arm"
 )
 
 var (
@@ -19,13 +20,13 @@ var (
 	EmptyModel    = common.FakesFamily.WithModel(emptyName)
 	StaticModel   = common.FakesFamily.WithModel(staticName)
 	ErroringModel = common.FakesFamily.WithModel(erroringName)
+	NaNModel      = common.FakesFamily.WithModel(nanName)
 )
 
 func init() {
 	resource.RegisterComponent(arm.API, Model, resource.Registration[arm.Arm, resource.NoNativeConfig]{
 		Constructor: newFakeArm,
 	})
-
 	resource.RegisterComponent(arm.API, EmptyModel, resource.Registration[arm.Arm, resource.NoNativeConfig]{
 		Constructor: newEmptyArm,
 	})
@@ -34,5 +35,8 @@ func init() {
 	})
 	resource.RegisterComponent(arm.API, ErroringModel, resource.Registration[arm.Arm, resource.NoNativeConfig]{
 		Constructor: newErroringArm,
+	})
+	resource.RegisterComponent(arm.API, NaNModel, resource.Registration[arm.Arm, resource.NoNativeConfig]{
+		Constructor: newNanArm,
 	})
 }

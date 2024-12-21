@@ -6,7 +6,6 @@ import (
 	_ "embed"
 
 	"go.viam.com/rdk/components/arm"
-	"go.viam.com/rdk/grpc"
 	"go.viam.com/rdk/logging"
 	"go.viam.com/rdk/referenceframe"
 	"go.viam.com/rdk/resource"
@@ -34,7 +33,7 @@ func newEmptyArm(ctx context.Context, deps resource.Dependencies, conf resource.
 }
 
 func (e *empty) EndPosition(ctx context.Context, extra map[string]interface{}) (spatialmath.Pose, error) {
-	return nil, grpc.UnimplementedError
+	return nil, nil
 }
 
 func (e *empty) MoveToPosition(ctx context.Context, pos spatialmath.Pose, extra map[string]interface{}) error {

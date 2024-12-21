@@ -6,62 +6,6 @@
   "description": "Fake simulated models of viam resource apis.",
   "models": [
     {
-      "api": "rdk:component:board",
-      "model": "rand:fake-modules-go:fake-board"
-    },
-    {
-      "api": "rdk:component:board",
-      "model": "rand:fake-modules-go:empty-board"
-    },
-    {
-      "api": "rdk:component:camera",
-      "model": "rand:fake-modules-go:fake-camera"
-    },
-    {
-      "api": "rdk:component:encoder",
-      "model": "rand:fake-modules-go:fake-encoder"
-    },
-    {
-      "api": "rdk:component:input_controller",
-      "model": "rand:fake-modules-go:fake-input"
-    },
-    {
-      "api": "rdk:component:input_controller",
-      "model": "rand:fake-modules-go:empty-input"
-    },
-    {
-      "api": "rdk:component:motor",
-      "model": "rand:fake-modules-go:fake-motor"
-    },
-    {
-      "api": "rdk:component:motor",
-      "model": "rand:fake-modules-go:empty-motor"
-    },
-    {
-      "api": "rdk:component:motor",
-      "model": "rand:fake-modules-go:static-motor"
-    },
-    {
-      "api": "rdk:component:power_sensor",
-      "model": "rand:fake-modules-go:fake-powersensor"
-    },
-    {
-      "api": "rdk:component:power_sensor",
-      "model": "rand:fake-modules-go:empty-powersensor"
-    },
-    {
-      "api": "rdk:component:power_sensor",
-      "model": "rand:fake-modules-go:static-powersensor"
-    },
-    {
-      "api": "rdk:component:power_sensor",
-      "model": "rand:fake-modules-go:erroring-powersensor"
-    },
-    {
-      "api": "rdk:component:power_sensor",
-      "model": "rand:fake-modules-go:waiting-powersensor"
-    },
-    {
       "api": "rdk:component:gantry",
       "model": "rand:fake-modules-go:fake-gantry"
     },
@@ -76,10 +20,6 @@
     {
       "api": "rdk:component:gantry",
       "model": "rand:fake-modules-go:erroring-gantry"
-    },
-    {
-      "api": "rdk:component:gripper",
-      "model": "rand:fake-modules-go:fake-gripper"
     },
     {
       "api": "rdk:component:movement_sensor",
@@ -100,6 +40,62 @@
     {
       "api": "rdk:component:movement_sensor",
       "model": "rand:fake-modules-go:erroring-movementsensor"
+    },
+    {
+      "api": "rdk:component:movement_sensor",
+      "model": "rand:fake-modules-go:nan-movementsensor"
+    },
+    {
+      "api": "rdk:component:board",
+      "model": "rand:fake-modules-go:fake-board"
+    },
+    {
+      "api": "rdk:component:board",
+      "model": "rand:fake-modules-go:empty-board"
+    },
+    {
+      "api": "rdk:component:gripper",
+      "model": "rand:fake-modules-go:fake-gripper"
+    },
+    {
+      "api": "rdk:component:base",
+      "model": "rand:fake-modules-go:fake-base"
+    },
+    {
+      "api": "rdk:component:base",
+      "model": "rand:fake-modules-go:empty-base"
+    },
+    {
+      "api": "rdk:component:base",
+      "model": "rand:fake-modules-go:nan-base"
+    },
+    {
+      "api": "rdk:component:encoder",
+      "model": "rand:fake-modules-go:fake-encoder"
+    },
+    {
+      "api": "rdk:component:camera",
+      "model": "rand:fake-modules-go:fake-camera"
+    },
+    {
+      "api": "rdk:component:power_sensor",
+      "model": "rand:fake-modules-go:fake-powersensor"
+    },
+    {
+      "api": "rdk:component:power_sensor",
+      "model": "rand:fake-modules-go:empty-powersensor"
+    },
+    {
+      "api": "rdk:component:power_sensor",
+      "model": "rand:fake-modules-go:static-powersensor"
+    },
+    {
+      "api": "rdk:component:power_sensor",
+      "model": "rand:fake-modules-go:erroring-powersensor"
+    },
+    {
+      "api": "rdk:component:power_sensor",
+      "model": "rand:fake-modules-go:waiting-powersensor"
     },
     {
       "api": "rdk:component:servo",
@@ -130,6 +126,26 @@
       "model": "rand:fake-modules-go:erroring-sensor"
     },
     {
+      "api": "rdk:component:input_controller",
+      "model": "rand:fake-modules-go:fake-input"
+    },
+    {
+      "api": "rdk:component:input_controller",
+      "model": "rand:fake-modules-go:empty-input"
+    },
+    {
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:fake-motor"
+    },
+    {
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:empty-motor"
+    },
+    {
+      "api": "rdk:component:motor",
+      "model": "rand:fake-modules-go:static-motor"
+    },
+    {
       "api": "rdk:component:arm",
       "model": "rand:fake-modules-go:fake-arm"
     },
@@ -146,12 +162,8 @@
       "model": "rand:fake-modules-go:erroring-arm"
     },
     {
-      "api": "rdk:component:base",
-      "model": "rand:fake-modules-go:fake-base"
-    },
-    {
-      "api": "rdk:component:base",
-      "model": "rand:fake-modules-go:empty-base"
+      "api": "rdk:component:arm",
+      "model": "rand:fake-modules-go:nan-arm"
     }
   ],
   "entrypoint": "bin/fake-modules-go",

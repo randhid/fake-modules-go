@@ -13,6 +13,7 @@ const (
 	staticName         = "static-movementsensor"
 	waitingName        = "waiting-movementsensor"
 	erroringName       = "erroring-movementsensor"
+	nanName            = "nan-movementsensor"
 )
 
 var (
@@ -21,6 +22,7 @@ var (
 	StaticModel   = common.FakesFamily.WithModel(staticName)
 	WaitingModel  = common.FakesFamily.WithModel(waitingName)
 	ErroringModel = common.FakesFamily.WithModel(erroringName)
+	NaNModel      = common.FakesFamily.WithModel(nanName)
 )
 
 func init() {
@@ -39,5 +41,8 @@ func init() {
 	})
 	resource.RegisterComponent(movementsensor.API, ErroringModel, resource.Registration[movementsensor.MovementSensor, resource.NoNativeConfig]{
 		Constructor: newErroringMovementSensor,
+	})
+	resource.RegisterComponent(movementsensor.API, NaNModel, resource.Registration[movementsensor.MovementSensor, resource.NoNativeConfig]{
+		Constructor: newNanMovementSensor,
 	})
 }

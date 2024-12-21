@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fake-modules-go/fakearm"
 	"fake-modules-go/fakebase"
 	"fake-modules-go/fakeboard"
@@ -29,169 +28,78 @@ import (
 	"go.viam.com/rdk/components/powersensor"
 	"go.viam.com/rdk/components/sensor"
 	"go.viam.com/rdk/components/servo"
-	"go.viam.com/rdk/logging"
 	"go.viam.com/rdk/module"
 	"go.viam.com/rdk/resource"
-	"go.viam.com/utils"
 )
 
 var ModuleFamily = resource.NewModelFamily("rand", "go-fakes")
 
 func main() {
-	utils.ContextualMain(mainWithArgs, module.NewLoggerFromArgs("Fake Go Modules"))
-}
+	module.ModularMain(
+		// Arms
+		resource.APIModel{arm.API, fakearm.Model},
+		resource.APIModel{arm.API, fakearm.EmptyModel},
+		resource.APIModel{arm.API, fakearm.StaticModel},
+		resource.APIModel{arm.API, fakearm.ErroringModel},
+		resource.APIModel{arm.API, fakearm.NaNModel},
 
-func mainWithArgs(ctx context.Context, args []string, logger logging.Logger) (err error) {
-	// instantiates the module itself
-	fakes, err := module.NewModuleFromArgs(ctx)
-	if err != nil {
-		return err
-	}
+		// Bases
+		resource.APIModel{base.API, fakebase.Model},
+		resource.APIModel{base.API, fakebase.EmptyModel},
+		resource.APIModel{base.API, fakebase.NanModel},
 
-	// Arms
-	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.EmptyModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.StaticModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, arm.API, fakearm.ErroringModel); err != nil {
-		return err
-	}
+		// Boards
+		resource.APIModel{board.API, fakeboard.Model},
+		resource.APIModel{board.API, fakeboard.EmptyModel},
 
-	// Bases
-	if err = fakes.AddModelFromRegistry(ctx, base.API, fakebase.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, base.API, fakebase.EmptyModel); err != nil {
-		return err
-	}
+		// Cameras
+		resource.APIModel{camera.API, fakecamera.Model},
 
-	// Boards
-	if err = fakes.AddModelFromRegistry(ctx, board.API, fakeboard.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, board.API, fakeboard.EmptyModel); err != nil {
-		return err
-	}
+		// Encoders
+		resource.APIModel{encoder.API, fakeencoder.Model},
 
-	// Cameras
-	if err = fakes.AddModelFromRegistry(ctx, camera.API, fakecamera.Model); err != nil {
-		return err
-	}
+		// Gantries
+		resource.APIModel{gantry.API, fakegantry.Model},
+		resource.APIModel{gantry.API, fakegantry.EmptyModel},
+		resource.APIModel{gantry.API, fakegantry.StaticModel},
+		resource.APIModel{gantry.API, fakegantry.ErroringModel},
 
-	// Encoders
-	if err = fakes.AddModelFromRegistry(ctx, encoder.API, fakeencoder.Model); err != nil {
-		return err
-	}
+		// Grippers
+		resource.APIModel{gripper.API, fakegripper.Model},
 
-	// Gantries
-	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.EmptyModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.StaticModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, gantry.API, fakegantry.ErroringModel); err != nil {
-		return err
-	}
+		// Input Controllers
+		resource.APIModel{input.API, fakeinput.Model},
+		resource.APIModel{input.API, fakeinput.EmptyModel},
 
-	// Grippers
-	if err = fakes.AddModelFromRegistry(ctx, gripper.API, fakegripper.Model); err != nil {
-		return err
-	}
+		// Motors
+		resource.APIModel{motor.API, fakemotor.Model},
+		resource.APIModel{motor.API, fakemotor.EmptyModel},
+		resource.APIModel{motor.API, fakemotor.StaticModel},
 
-	// Input Controllers
-	if err = fakes.AddModelFromRegistry(ctx, input.API, fakeinput.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, input.API, fakeinput.EmptyModel); err != nil {
-		return err
-	}
+		// MovementSensors
+		resource.APIModel{movementsensor.API, fakemovementsensor.Model},
+		resource.APIModel{movementsensor.API, fakemovementsensor.EmptyModel},
+		resource.APIModel{movementsensor.API, fakemovementsensor.StaticModel},
+		resource.APIModel{movementsensor.API, fakemovementsensor.WaitingModel},
+		resource.APIModel{movementsensor.API, fakemovementsensor.ErroringModel},
+		resource.APIModel{movementsensor.API, fakemovementsensor.NaNModel},
 
-	// Motors
-	if err = fakes.AddModelFromRegistry(ctx, motor.API, fakemotor.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, motor.API, fakemotor.EmptyModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, motor.API, fakemotor.StaticModel); err != nil {
-		return err
-	}
+		// PowerSensors
+		resource.APIModel{powersensor.API, fakepowersensor.Model},
+		resource.APIModel{powersensor.API, fakepowersensor.EmptyModel},
+		resource.APIModel{powersensor.API, fakepowersensor.StaticModel},
+		resource.APIModel{powersensor.API, fakepowersensor.ErroringModel},
+		resource.APIModel{powersensor.API, fakepowersensor.WaitingModel},
 
-	// MovementSensors
-	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.EmptyModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.StaticModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.WaitingModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, movementsensor.API, fakemovementsensor.ErroringModel); err != nil {
-		return err
-	}
+		// Servos
+		resource.APIModel{servo.API, fakeservo.Model},
+		resource.APIModel{servo.API, fakeservo.StaticModel},
 
-	// PowerSensors
-	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.EmptyModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.StaticModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.ErroringModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, powersensor.API, fakepowersensor.WaitingModel); err != nil {
-		return err
-	}
-
-	// Servos
-	if err = fakes.AddModelFromRegistry(ctx, servo.API, fakeservo.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, servo.API, fakeservo.StaticModel); err != nil {
-		return err
-	}
-
-	// Sensors
-	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.Model); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.EmptyModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.StaticModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.WaitingModel); err != nil {
-		return err
-	}
-	if err = fakes.AddModelFromRegistry(ctx, sensor.API, fakesensor.ErrroingModel); err != nil {
-		return err
-	}
-
-	// Each module runs as its own process
-	err = fakes.Start(ctx)
-	logger.Warn("starting module")
-	defer fakes.Close(ctx)
-	if err != nil {
-		return err
-	}
-	<-ctx.Done()
-	return nil
+		// Sensors
+		resource.APIModel{sensor.API, fakesensor.Model},
+		resource.APIModel{sensor.API, fakesensor.EmptyModel},
+		resource.APIModel{sensor.API, fakesensor.StaticModel},
+		resource.APIModel{sensor.API, fakesensor.WaitingModel},
+		resource.APIModel{sensor.API, fakesensor.ErrroingModel},
+	)
 }
