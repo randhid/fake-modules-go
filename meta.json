@@ -78,6 +78,18 @@
       "model": "rand:fake-modules-go:fake-camera"
     },
     {
+      "api": "rdk:component:camera",
+      "model": "rand:fake-modules-go:erroring"
+    },
+    {
+      "api": "rdk:component:camera",
+      "model": "rand:fake-modules-go:empty"
+    },
+    {
+      "api": "rdk:component:camera",
+      "model": "rand:fake-modules-go:malformed"
+    },
+    {
       "api": "rdk:component:power_sensor",
       "model": "rand:fake-modules-go:fake-powersensor"
     },

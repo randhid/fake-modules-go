@@ -54,6 +54,9 @@ func main() {
 
 		// Cameras
 		resource.APIModel{camera.API, fakecamera.Model},
+		resource.APIModel{camera.API, fakecamera.Empty},
+		resource.APIModel{camera.API, fakecamera.Erroring},
+		resource.APIModel{camera.API, fakecamera.Malformed},
 
 		// Encoders
 		resource.APIModel{encoder.API, fakeencoder.Model},
