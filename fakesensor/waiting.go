@@ -4,7 +4,6 @@ import (
 	"context"
 	"fake-modules-go/common"
 	"math/rand"
-	"sync"
 	"time"
 
 	"go.viam.com/rdk/components/sensor"
@@ -14,7 +13,8 @@ import (
 
 type WaitingConfig struct {
 	resource.TriviallyValidateConfig
-	WaitTime int `json:"wait_time_milli_seconds,omitempty"`
+	ReturnEmpty bool `json:"return_empty,omitempty"`
+	WaitTime    int  `json:"wait_time_milli_seconds,omitempty"`
 }
 
 type waiting struct {
@@ -24,8 +24,8 @@ type waiting struct {
 
 	logger logging.Logger
 
-	mu       sync.Mutex
-	waitTime time.Duration
+	waitTime    time.Duration
+	returnEmpty bool
 }
 
 func newWaitingSensor(_ context.Context, _ resource.Dependencies, conf resource.Config, logger logging.Logger) (
@@ -43,10 +43,13 @@ func newWaitingSensor(_ context.Context, _ resource.Dependencies, conf resource.
 	}
 
 	w := &waiting{
-		Named:    conf.ResourceName().AsNamed(),
-		logger:   logger,
-		waitTime: waitTime,
+		Named:       conf.ResourceName().AsNamed(),
+		logger:      logger,
+		waitTime:    waitTime,
+		returnEmpty: newConf.ReturnEmpty,
 	}
+
+	w.logger.Info("REUTNR EMPTY %#v", w.returnEmpty)
 
 	return w, nil
 }
@@ -56,6 +59,9 @@ func (w *waiting) Readings(ctx context.Context, extra map[string]interface{}) (m
 	randomfloat := rand.Float64()
 
 	time.Sleep(w.waitTime)
+	if w.returnEmpty {
+		return map[string]interface{}{}, nil
+	}
 
 	return map[string]interface{}{
 		"on":     randomBool,
